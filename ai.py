@@ -47,3 +47,20 @@ class CNN(nn.Module): # Convolutional Neural Network
         
         # flatten
         return x.data.view(1, -1).size(1)
+    
+    def forward(self, input):
+        # using the input image, process it throught 3 convolutional layers
+        input = F.relu(F.max_pool2d(self.convolution1(input), 3, 2))
+        input = F.relu(F.max_pool2d(self.convolution2(input), 3, 2))
+        input = F.relu(F.max_pool2d(self.convolution3(input), 3, 2))
+        
+        # flatten processed data into 1 dimensional array
+        flatten = input.view(input.size(0), -1)
+        
+        # propagate flatten data throught the hidden layer
+        hiddenLayer = F.relu(self.fc1(flatten))
+        
+        # output layer
+        return self.fc2(hiddenLayer)
+        
+        
