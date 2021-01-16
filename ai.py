@@ -62,5 +62,21 @@ class CNN(nn.Module): # Convolutional Neural Network
         
         # output layer
         return self.fc2(hiddenLayer)
+    
+class SoftmaxBody(nn.Module):
+    
+    def __init__(self, temperature):
+        super(SoftmaxBody, self).__init__()
+        self.temperature = temperature
         
+    def determineAction(self, outputs):
+        # using each q-value from the output layer, create a probability distribution
+        probs = F.softmax(outputs * self.temperature)
+        
+        # select an action from the probability
+        action = probs.multinomial()
+        return action
+        
+
+
         
