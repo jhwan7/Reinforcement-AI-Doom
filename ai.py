@@ -93,14 +93,27 @@ class AI:
         # send input data to the brain and receive resulting action
         output =  self.brain(input)
         
+        # send brain results to the body
         action = self.body(output)
         
-        return action
+        # re-transform the brain to normal type
+        return action.data.numpy
+    
+
+# get Doom environment
+doom_env = image_preprocessing.PreprocessImage(SkipWrapper(4)(ToDiscrete("minimal")(gym.make("ppaquette/DoomCorridor-v0"))), width = 80, height = 80, grayscale = True) # corresponds to line 35, (1, 80, 80)
+doom_env = gym.wrappers.Monitor(doom_env, "videos", force = True)
         
+# get number of actions from the OpenAI module
+numberOfActions = doom_env.action_space.n
+
         
-        
-        
-        
+# Building the Full AI
+cnn = CNN(numberOfActions) # brain
+softmaxBody = SoftmaxBody(temperature=1.0) # body, customize temperature here
+
+# combine brain and body
+ai = AI(brain = cnn, body = softmaxBody)
         
         
         
