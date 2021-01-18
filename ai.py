@@ -116,12 +116,31 @@ softmaxBody = SoftmaxBody(temperature=1.0) # body, customize temperature here
 ai = AI(brain = cnn, body = softmaxBody)
         
         
+# setup Experience Replay
+
+# eligibility trace step size
+n_steps = experience_replay.NStepProgress(env = doom_env, ai = ai, n_step = 10)
+memory = experience_replay.ReplayMemory(n_steps= n_steps, capacity= 10000) # pass eligibility step size, and memory capacity for experience replay.
         
         
+# asynchronous n-step Q-Learning (eligibility trace method)
+def eligibilityTrace(batch): # contains input & target
+    gamma = 0.99
+    inputs = []
+    targets = []
+    
+    for series in batch:
+        # get input and transform to a tensor type
+        input = Variable(torch.from_numpy(np.array([series[0].state, series[-1].state], dtype = np.float32))) # strucutre based on experience replay file line 8
         
+        # get result with this input
+        output = cnn(input)
         
+        # calculate cumulative reward
+        cumulativeReward = 0.0 if series[-1].done else output[1].data.max()
         
-        
+        for step in reversed(series[:-1]):
+            cumulativeReward =  step.reward + gamma * cumulativeReward
         
         
         
