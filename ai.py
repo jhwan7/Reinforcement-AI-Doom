@@ -84,11 +84,18 @@ class AI:
         self.brain = brain
         self.body = body
         
+    def __call__(self, inputs):
+        # transfrom input data, to a form accepted by the NN
+        input = np.array(inputs, dtype=np.float32)
+        input = torch.from_numpy(input)
+        input = Variable(input)
         
+        # send input data to the brain and receive resulting action
+        output =  self.brain(input)
         
+        action = self.body(output)
         
-        
-        
+        return action
         
         
         
