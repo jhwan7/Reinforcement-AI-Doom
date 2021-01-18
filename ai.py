@@ -79,4 +79,61 @@ class SoftmaxBody(nn.Module):
         
 
 
+class AI:
+    def __init__(self, brain, body):
+        self.brain = brain
+        self.body = body
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
